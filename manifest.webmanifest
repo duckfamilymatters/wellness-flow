@@ -1,0 +1,13 @@
+{
+  "name": "Wellness Flow",
+  "short_name": "Wellness",
+  "id": "./",
+  "description": "A calm daily wellness practice tracker for one person.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#eff5ed",
+  "theme_color": "#8ea889",
+  "icons": []
+}

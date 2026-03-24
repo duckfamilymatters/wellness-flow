@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#8ea889" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Wellness Flow</title>
+  </head>
+  <body data-page="home">
+    <main class="app-shell">
+      <header class="hero-panel">
+        <nav class="top-nav" aria-label="Primary">
+          <a class="brand" href="index.html">Wellness Flow</a>
+          <div class="nav-links">
+            <a class="nav-link is-active" href="index.html">Today</a>
+            <a class="nav-link" href="manage.html">Manage Exercises</a>
+          </div>
+        </nav>
+        <div class="hero-copy">
+          <p class="eyebrow">Daily practice space</p>
+          <h1>A calmer ritual, kept simple.</h1>
+          <p class="hero-text">
+            Pick one practice, complete it in the physical world, and keep a clean record of how it went.
+          </p>
+        </div>
+      </header>
+
+      <section class="card reminder-card" aria-labelledby="reminder-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Reminder</p>
+            <h2 id="reminder-title">Daily check-in time</h2>
+          </div>
+        </div>
+        <p class="muted">
+          Local browser notifications remain experimental in this version. The setting is preserved, but reminder reliability will be improved later.
+        </p>
+        <div class="row">
+          <label for="reminder-time">Time (PT)</label>
+          <input id="reminder-time" type="time" value="09:00" />
+          <button id="save-reminder" type="button">Save time</button>
+          <button id="enable-notifications" type="button" class="ghost">Enable notifications</button>
+        </div>
+        <p id="reminder-status" class="status"></p>
+      </section>
+
+      <section class="card practice-card" aria-labelledby="today-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Today</p>
+            <h2 id="today-title">Practice</h2>
+          </div>
+          <a class="text-link" href="manage.html">Edit exercise pool</a>
+        </div>
+        <button id="pick-exercise" type="button">Pick today&apos;s exercise</button>
+        <div id="selected-exercise" class="selected"></div>
+        <form id="log-form" class="stack hidden">
+          <label for="mood-rating">Mood rating (optional)</label>
+          <select id="mood-rating">
+            <option value="">No rating</option>
+            <option value="1">1 - Very low</option>
+            <option value="2">2 - Low</option>
+            <option value="3">3 - Neutral</option>
+            <option value="4">4 - Good</option>
+            <option value="5">5 - Very good</option>
+          </select>
+          <textarea id="log-note" rows="3" placeholder="Write anything worth remembering."></textarea>
+          <div class="row">
+            <button id="mark-complete" type="button">Completed</button>
+            <button id="mark-incomplete" type="button" class="ghost">Not completed</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="stats-grid" aria-label="Progress overview">
+        <div id="stats" class="stats"></div>
+      </section>
+
+      <section class="card" aria-labelledby="calendar-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">History</p>
+            <h2 id="calendar-title">Calendar</h2>
+          </div>
+        </div>
+        <div class="row between">
+          <button id="prev-month" type="button" class="ghost">Previous</button>
+          <strong id="month-label"></strong>
+          <button id="next-month" type="button" class="ghost">Next</button>
+        </div>
+        <div id="calendar-legend" class="legend muted"></div>
+        <div id="calendar" class="calendar"></div>
+        <div id="day-detail" class="muted detail-box"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

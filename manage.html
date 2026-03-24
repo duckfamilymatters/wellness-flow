@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#8ea889" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Manage Exercises | Wellness Flow</title>
+  </head>
+  <body data-page="manage">
+    <main class="app-shell">
+      <header class="hero-panel hero-compact">
+        <nav class="top-nav" aria-label="Primary">
+          <a class="brand" href="index.html">Wellness Flow</a>
+          <div class="nav-links">
+            <a class="nav-link" href="index.html">Today</a>
+            <a class="nav-link is-active" href="manage.html">Manage Exercises</a>
+          </div>
+        </nav>
+        <div class="hero-copy">
+          <p class="eyebrow">Exercise library</p>
+          <h1>Manage your practice pool.</h1>
+          <p class="hero-text">
+            Add, import, review, and remove exercises here without crowding the daily flow.
+          </p>
+        </div>
+      </header>
+
+      <section class="card" aria-labelledby="exercise-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Create</p>
+            <h2 id="exercise-title">Add an exercise</h2>
+          </div>
+        </div>
+        <form id="exercise-form" class="stack">
+          <input id="exercise-name" type="text" placeholder="Exercise title" required />
+          <textarea id="exercise-guidance" placeholder="Brief guidance" rows="4" required></textarea>
+          <button type="submit">Add exercise</button>
+        </form>
+      </section>
+
+      <section class="card" aria-labelledby="import-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Import</p>
+            <h2 id="import-title">Bulk upload</h2>
+          </div>
+        </div>
+        <div class="import-box stack">
+          <label for="exercise-file">
+            Upload `.docx`, `.txt`, or `.md`. Each title line should start with `練習：`, and the guidance continues until the next empty line.
+          </label>
+          <input id="exercise-file" type="file" accept=".docx,.txt,.md,.text" />
+          <button id="import-exercises" type="button">Import exercises</button>
+          <p id="import-status" class="status"></p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="library-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Library</p>
+            <h2 id="library-title">Current exercise pool</h2>
+          </div>
+          <p id="exercise-count" class="muted"></p>
+        </div>
+        <ul id="exercise-list" class="exercise-list"></ul>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

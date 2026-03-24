@@ -111,6 +111,35 @@ a {
   max-width: 620px;
 }
 
+.hero-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.9fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.hero-grid .hero-copy {
+  margin-top: 0;
+}
+
+.hero-reminder {
+  position: relative;
+  z-index: 1;
+  padding: 16px;
+  border: 1px solid rgba(97, 122, 98, 0.18);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.hero-reminder-row {
+  align-items: stretch;
+}
+
+.hero-reminder-row input {
+  max-width: 122px;
+}
+
 .eyebrow {
   margin: 0 0 8px;
   font-size: 0.76rem;
@@ -226,10 +255,6 @@ button.ghost {
   border-color: rgba(90, 118, 91, 0.22);
 }
 
-.reminder-card .row label {
-  color: var(--muted);
-}
-
 .practice-card {
   display: grid;
   gap: 14px;
@@ -324,23 +349,28 @@ button.ghost {
 }
 
 .day.complete-1 {
-  background: #e6eec7;
+  background: #edf5e6;
 }
 
 .day.complete-2 {
-  background: #dbe8b2;
+  background: #d9ebcf;
 }
 
 .day.complete-3 {
-  background: #cbe0a2;
+  background: #c1deba;
 }
 
 .day.complete-4 {
-  background: #b9d88f;
+  background: #9ecb98;
 }
 
 .day.complete-5 {
-  background: #a3cd82;
+  background: #6fa06f;
+  color: #f8fcf6;
+}
+
+.day.complete-unrated {
+  background: #dfead8;
 }
 
 .day.today {
@@ -402,6 +432,15 @@ button.ghost {
 
   .hero-copy {
     margin-top: 20px;
+  }
+
+  .hero-grid {
+    margin-top: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .hero-reminder-row input {
+    max-width: none;
   }
 
   .stats {

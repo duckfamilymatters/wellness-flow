@@ -106,7 +106,8 @@ async function requestNotifications() {
 function renderReminderStatus(extra = "") {
   if (!els.reminderStatus) return;
   const permission = "Notification" in window ? Notification.permission : "unsupported";
-  const base = `Saved time: ${state.reminderTime} PT. Notification permission: ${permission}.`;
+  const permissionLabel = permission === "granted" ? "on" : permission === "denied" ? "off" : permission;
+  const base = `${state.reminderTime} PT, notifications ${permissionLabel}.`;
   els.reminderStatus.textContent = extra ? `${extra} ${base}` : base;
 }
 
@@ -386,7 +387,6 @@ function renderCalendar() {
   const month = Number(calendarDate.slice(5, 7)) - 1;
   const firstOfMonth = new Date(Date.UTC(year, month, 1));
   const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-  const completionLevels = getMonthlyCompletionLevels(year, month);
 
   els.monthLabel.textContent = firstOfMonth.toLocaleDateString("en-US", {
     month: "long",
@@ -395,7 +395,7 @@ function renderCalendar() {
   });
 
   if (els.calendarLegend) {
-    els.calendarLegend.textContent = "Completed days deepen in color as the month fills in. Incomplete, missing, and future days stay neutral.";
+    els.calendarLegend.textContent = "Completed days use mood rating: 1 lightest green to 5 deepest green. Incomplete, missing, and future days stay neutral.";
   }
 
   const weekdayOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -426,7 +426,12 @@ function renderCalendar() {
 
     const log = state.logs[dateKey];
     if (log?.status === "complete") {
-      btn.classList.add(`complete-${completionLevels[dateKey] || 1}`);
+      const mood = Number(log.mood);
+      if (Number.isInteger(mood) && mood >= 1 && mood <= 5) {
+        btn.classList.add(`complete-${mood}`);
+      } else {
+        btn.classList.add("complete-unrated");
+      }
     }
     if (dateKey === today) {
       btn.classList.add("today");
@@ -435,33 +440,6 @@ function renderCalendar() {
     btn.addEventListener("click", () => showDayDetail(dateKey));
     els.calendar.appendChild(btn);
   }
-}
-
-function getMonthlyCompletionLevels(year, monthIndex) {
-  const daysInMonth = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
-  const completedKeys = [];
-
-  for (let day = 1; day <= daysInMonth; day += 1) {
-    const dateKey = `${year}-${pad2(monthIndex + 1)}-${pad2(day)}`;
-    if (state.logs[dateKey]?.status === "complete") {
-      completedKeys.push(dateKey);
-    }
-  }
-
-  const totalCompleted = completedKeys.length;
-  const levels = {};
-
-  completedKeys.forEach((dateKey, index) => {
-    if (totalCompleted <= 1) {
-      levels[dateKey] = 3;
-      return;
-    }
-
-    const progress = index / (totalCompleted - 1);
-    levels[dateKey] = Math.min(5, Math.max(1, Math.round(progress * 4) + 1));
-  });
-
-  return levels;
 }
 
 function showDayDetail(dateKey) {

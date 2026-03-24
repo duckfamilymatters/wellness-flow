@@ -22,33 +22,26 @@
             <a class="nav-link" href="manage.html">Manage Exercises</a>
           </div>
         </nav>
-        <div class="hero-copy">
-          <p class="eyebrow">Daily practice space</p>
-          <h1>A calmer ritual, kept simple.</h1>
-          <p class="hero-text">
-            Pick one practice, complete it in the physical world, and keep a clean record of how it went.
-          </p>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Daily practice space</p>
+            <h1>A calmer ritual, kept simple.</h1>
+            <p class="hero-text">
+              Pick one practice, complete it in the physical world, and keep a clean record of how it went.
+            </p>
+          </div>
+          <section class="hero-reminder" aria-labelledby="reminder-title">
+            <p class="eyebrow">Reminder</p>
+            <h2 id="reminder-title">Daily check-in</h2>
+            <div class="row hero-reminder-row">
+              <input id="reminder-time" type="time" value="09:00" aria-label="Reminder time in Pacific Time" />
+              <button id="save-reminder" type="button">Save</button>
+              <button id="enable-notifications" type="button" class="ghost">Enable</button>
+            </div>
+            <p id="reminder-status" class="status"></p>
+          </section>
         </div>
       </header>
-
-      <section class="card reminder-card" aria-labelledby="reminder-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Reminder</p>
-            <h2 id="reminder-title">Daily check-in time</h2>
-          </div>
-        </div>
-        <p class="muted">
-          Local browser notifications remain experimental in this version. The setting is preserved, but reminder reliability will be improved later.
-        </p>
-        <div class="row">
-          <label for="reminder-time">Time (PT)</label>
-          <input id="reminder-time" type="time" value="09:00" />
-          <button id="save-reminder" type="button">Save time</button>
-          <button id="enable-notifications" type="button" class="ghost">Enable notifications</button>
-        </div>
-        <p id="reminder-status" class="status"></p>
-      </section>
 
       <section class="card practice-card" aria-labelledby="today-title">
         <div class="section-heading">

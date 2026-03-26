@@ -15,7 +15,6 @@ let calendarDate = ptNowDate();
 const els = {
   reminderTime: byId("reminder-time"),
   saveReminder: byId("save-reminder"),
-  enableNotifications: byId("enable-notifications"),
   reminderStatus: byId("reminder-status"),
   exerciseForm: byId("exercise-form"),
   exerciseName: byId("exercise-name"),
@@ -51,8 +50,7 @@ function byId(id) {
 }
 
 function bindEvents() {
-  els.saveReminder?.addEventListener("click", saveReminderTime);
-  els.enableNotifications?.addEventListener("click", requestNotifications);
+  els.saveReminder?.addEventListener("click", saveAndEnableReminder);
   els.exerciseForm?.addEventListener("submit", addExercise);
   els.importExercises?.addEventListener("click", importExercisesFromFile);
   els.pickExercise?.addEventListener("click", pickExerciseForToday);
@@ -80,6 +78,7 @@ function renderAll() {
   if (els.reminderTime) {
     els.reminderTime.value = state.reminderTime;
     renderReminderStatus();
+    renderReminderButton();
   }
   renderExercises();
   renderTodayPick();
@@ -87,20 +86,22 @@ function renderAll() {
   renderCalendar();
 }
 
-function saveReminderTime() {
+async function saveAndEnableReminder() {
   state.reminderTime = els.reminderTime?.value || "09:00";
   persistState();
-  renderReminderStatus("Reminder time saved.");
-}
 
-async function requestNotifications() {
-  if (!(els.reminderStatus && "Notification" in window)) {
-    renderReminderStatus("Browser notifications are not supported here.");
-    return;
+  let extra = "Saved.";
+  if (!("Notification" in window)) {
+    extra = "Saved. Notifications unavailable.";
+  } else if (Notification.permission !== "granted") {
+    const permission = await Notification.requestPermission();
+    extra = permission === "granted" ? "Saved and enabled." : "Saved. Notifications not enabled.";
+  } else {
+    extra = "Saved and enabled.";
   }
 
-  const permission = await Notification.requestPermission();
-  renderReminderStatus(`Notifications: ${permission}.`);
+  renderReminderStatus(extra);
+  renderReminderButton();
 }
 
 function renderReminderStatus(extra = "") {
@@ -109,6 +110,13 @@ function renderReminderStatus(extra = "") {
   const permissionLabel = permission === "granted" ? "on" : permission === "denied" ? "off" : permission;
   const base = `${state.reminderTime} PT, notifications ${permissionLabel}.`;
   els.reminderStatus.textContent = extra ? `${extra} ${base}` : base;
+}
+
+function renderReminderButton() {
+  if (!els.saveReminder) return;
+  const isEnabled = "Notification" in window && Notification.permission === "granted";
+  els.saveReminder.textContent = isEnabled ? "Saved & Enabled" : "Save & Enable";
+  els.saveReminder.classList.toggle("is-ready", isEnabled);
 }
 
 function addExercise(event) {

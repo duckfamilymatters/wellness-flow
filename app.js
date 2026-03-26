@@ -1,9 +1,8 @@
 const STORAGE_KEY = "wellness_flow_v1";
+const STARTER_EXERCISES_URL = "starter_exercises.txt";
 const PT_TZ = "America/Los_Angeles";
 
 const initialState = {
-  reminderTime: "09:00",
-  reminderLastSentDate: "",
   exercises: [],
   logs: {},
   todayPick: {},
@@ -13,9 +12,6 @@ const state = loadState();
 let calendarDate = ptNowDate();
 
 const els = {
-  reminderTime: byId("reminder-time"),
-  saveReminder: byId("save-reminder"),
-  reminderStatus: byId("reminder-status"),
   exerciseForm: byId("exercise-form"),
   exerciseName: byId("exercise-name"),
   exerciseGuidance: byId("exercise-guidance"),
@@ -41,16 +37,14 @@ const els = {
 };
 
 bindEvents();
-renderAll();
 registerServiceWorker();
-startReminderLoop();
+initializeApp();
 
 function byId(id) {
   return document.getElementById(id);
 }
 
 function bindEvents() {
-  els.saveReminder?.addEventListener("click", saveAndEnableReminder);
   els.exerciseForm?.addEventListener("submit", addExercise);
   els.importExercises?.addEventListener("click", importExercisesFromFile);
   els.pickExercise?.addEventListener("click", pickExerciseForToday);
@@ -74,49 +68,50 @@ function persistState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+async function initializeApp() {
+  await ensureStarterExercises();
+  renderAll();
+}
+
 function renderAll() {
-  if (els.reminderTime) {
-    els.reminderTime.value = state.reminderTime;
-    renderReminderStatus();
-    renderReminderButton();
-  }
   renderExercises();
   renderTodayPick();
   renderStats();
   renderCalendar();
 }
 
-async function saveAndEnableReminder() {
-  state.reminderTime = els.reminderTime?.value || "09:00";
-  persistState();
+async function ensureStarterExercises() {
+  try {
+    const response = await fetch(STARTER_EXERCISES_URL, { cache: "no-cache" });
+    if (!response.ok) return;
 
-  let extra = "Saved.";
-  if (!("Notification" in window)) {
-    extra = "Saved. Notifications unavailable.";
-  } else if (Notification.permission !== "granted") {
-    const permission = await Notification.requestPermission();
-    extra = permission === "granted" ? "Saved and enabled." : "Saved. Notifications not enabled.";
-  } else {
-    extra = "Saved and enabled.";
+    const text = await response.text();
+    const starterExercises = parseExercisesFromText(text);
+    if (!starterExercises.length) return;
+
+    const existing = new Set(
+      state.exercises.map((exercise) => normalizeExerciseKey(exercise.title, exercise.guidance)),
+    );
+
+    let changed = false;
+    starterExercises.forEach((exercise) => {
+      const key = normalizeExerciseKey(exercise.title, exercise.guidance);
+      if (existing.has(key)) return;
+
+      state.exercises.push({
+        id: crypto.randomUUID(),
+        title: exercise.title,
+        guidance: exercise.guidance,
+      });
+      existing.add(key);
+      changed = true;
+    });
+
+    if (!changed) return;
+    persistState();
+  } catch {
+    // Keep app usable even if starter content cannot be fetched.
   }
-
-  renderReminderStatus(extra);
-  renderReminderButton();
-}
-
-function renderReminderStatus(extra = "") {
-  if (!els.reminderStatus) return;
-  const permission = "Notification" in window ? Notification.permission : "unsupported";
-  const permissionLabel = permission === "granted" ? "on" : permission === "denied" ? "off" : permission;
-  const base = `${state.reminderTime} PT, notifications ${permissionLabel}.`;
-  els.reminderStatus.textContent = extra ? `${extra} ${base}` : base;
-}
-
-function renderReminderButton() {
-  if (!els.saveReminder) return;
-  const isEnabled = "Notification" in window && Notification.permission === "granted";
-  els.saveReminder.textContent = isEnabled ? "Saved & Enabled" : "Save & Enable";
-  els.saveReminder.classList.toggle("is-ready", isEnabled);
 }
 
 function addExercise(event) {
@@ -206,7 +201,12 @@ async function extractTextFromUpload(file) {
 }
 
 function parseExercisesFromText(text) {
-  const lines = text.replaceAll("\r\n", "\n").replaceAll("\r", "\n").split("\n");
+  const lines = text
+    .replaceAll("\u2028", "\n")
+    .replaceAll("\u2029", "\n")
+    .replaceAll("\r\n", "\n")
+    .replaceAll("\r", "\n")
+    .split("\n");
   const items = [];
   let index = 0;
 
@@ -221,12 +221,10 @@ function parseExercisesFromText(text) {
     index += 1;
     const guidanceLines = [];
 
-    while (index < lines.length && lines[index].trim() !== "") {
-      guidanceLines.push(lines[index].trim());
-      index += 1;
-    }
-
-    while (index < lines.length && lines[index].trim() === "") {
+    while (index < lines.length && !lines[index].trim().match(/^練習[:：]\s*/)) {
+      if (lines[index].trim()) {
+        guidanceLines.push(lines[index].trim());
+      }
       index += 1;
     }
 
@@ -470,29 +468,6 @@ function shiftMonth(delta) {
   const date = new Date(Date.UTC(year, month + delta, 1));
   calendarDate = `${date.getUTCFullYear()}-${pad2(date.getUTCMonth() + 1)}-01`;
   renderCalendar();
-}
-
-function startReminderLoop() {
-  checkAndNotify();
-  setInterval(checkAndNotify, 60 * 1000);
-}
-
-function checkAndNotify() {
-  const now = ptNowParts();
-  const todayKey = `${now.year}-${now.month}-${now.day}`;
-  const currentTime = `${now.hour}:${now.minute}`;
-
-  if (currentTime !== state.reminderTime) return;
-  if (state.reminderLastSentDate === todayKey) return;
-
-  state.reminderLastSentDate = todayKey;
-  persistState();
-
-  if ("Notification" in window && Notification.permission === "granted") {
-    new Notification("Wellness Flow", {
-      body: "Time for your daily practice.",
-    });
-  }
 }
 
 function ptNowDate() {

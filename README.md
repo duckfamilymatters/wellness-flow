@@ -4,8 +4,8 @@ A local-first, offline-capable web app for daily wellness practice.
 
 ## What this MVP includes
 - Separate daily screen and exercise management screen
-- Daily reminder time setup (Pacific Time) with browser notifications
 - Exercise pool management (add/delete exercises with title + guidance)
+- Built-in starter exercise collection from `《中道》的练习`
 - Bulk exercise import from `.docx`, `.txt`, or `.md` using `練習：<title>` format
 - Random pick for today's exercise
 - Log as `Completed` or `Not completed`
@@ -13,11 +13,6 @@ A local-first, offline-capable web app for daily wellness practice.
 - Calendar view with completion-only color progression across each month
 - Weekly stats and current streak
 - Offline use with service worker + local storage
-
-## Important limitation in MVP
-Automatic **email reminders** are not included yet because this MVP is fully offline and has no backend/service.
-- Current reminder behavior: browser notification when app is open (or installed as PWA with notification permission).
-- Phase 2 option: add backend/scheduler for daily email to `senye1126@gmail.com`.
 
 ## Run locally
 From this folder:
@@ -72,7 +67,6 @@ Google Docs note:
 - In Google Docs, use `File -> Download -> Microsoft Word (.docx)` or `Plain Text (.txt)` first.
 
 ## Phase 2 ideas
-- Automatic daily email reminder
 - Export/import backup for full data (exercise pool + logs)
 - Multi-device sync
 - Optional accounts

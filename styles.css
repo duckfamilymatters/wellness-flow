@@ -80,6 +80,12 @@ a {
   flex-wrap: wrap;
 }
 
+.nav-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .brand {
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -103,41 +109,6 @@ a {
 .hero-copy {
   margin-top: 28px;
   max-width: 100%;
-}
-
-.hero-grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 20px;
-  align-items: start;
-}
-
-.hero-grid .hero-copy {
-  margin-top: 0;
-}
-
-.hero-reminder {
-  position: relative;
-  z-index: 1;
-  padding: 16px;
-  border: 1px solid rgba(97, 122, 98, 0.18);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.58);
-}
-
-.hero-reminder-row {
-  align-items: stretch;
-  flex-wrap: nowrap;
-}
-
-.hero-reminder-row input {
-  max-width: 122px;
-  min-width: 122px;
-}
-
-.hero-reminder .status {
-  margin: 10px 0 0;
 }
 
 .eyebrow {
@@ -253,11 +224,6 @@ button.ghost {
   background: rgba(255, 255, 255, 0.45);
   color: var(--accent-strong);
   border-color: rgba(90, 118, 91, 0.22);
-}
-
-button.is-ready {
-  background: linear-gradient(180deg, #6d8a6d 0%, var(--accent-strong) 100%);
-  border-color: var(--accent-strong);
 }
 
 .practice-card {
@@ -437,20 +403,6 @@ button.is-ready {
 
   .hero-copy {
     margin-top: 20px;
-  }
-
-  .hero-grid {
-    margin-top: 20px;
-    grid-template-columns: 1fr;
-  }
-
-  .hero-reminder-row {
-    flex-wrap: wrap;
-  }
-
-  .hero-reminder-row input {
-    max-width: none;
-    min-width: 0;
   }
 
   .stats {

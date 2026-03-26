@@ -1,10 +1,11 @@
-const CACHE_NAME = "wellness-flow-cache-v6";
+const CACHE_NAME = "wellness-flow-cache-v7";
 const ASSETS = [
   "./",
   "./index.html",
   "./manage.html",
   "./styles.css",
   "./app.js",
+  "./starter_exercises.txt",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",

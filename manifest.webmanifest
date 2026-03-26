@@ -1,8 +1,8 @@
 {
-  "name": "Wellness Flow",
-  "short_name": "Wellness",
+  "name": "每日一练",
+  "short_name": "每日一练",
   "id": "./",
-  "description": "A calm daily wellness practice tracker for one person.",
+  "description": "一个安静、简洁、适合个人使用的每日练习记录应用。",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

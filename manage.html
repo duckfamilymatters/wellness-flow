@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,20 +8,20 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
-    <title>Manage Exercises | Wellness Flow</title>
+    <title>编辑练习集 | 每日一练</title>
   </head>
   <body data-page="manage">
     <main class="app-shell">
       <header class="hero-panel hero-compact">
         <nav class="top-nav" aria-label="Primary">
-          <a class="brand" href="index.html">Wellness Flow</a>
-          <a class="nav-link" href="index.html">Back to Today&apos;s Practice</a>
+          <a class="brand" href="index.html">每日一练</a>
+          <a class="nav-link" href="index.html">返回今日练习</a>
         </nav>
         <div class="hero-copy">
-          <p class="eyebrow">Exercise library</p>
-          <h1>Edit your exercises collection.</h1>
+          <p class="eyebrow">练习资料库</p>
+          <h1>编辑你的练习集。</h1>
           <p class="hero-text">
-            Add, import, review, and remove exercises here without crowding the daily flow.
+            在这里新增、导入、查看和删除练习，不打扰每日练习的主流程。
           </p>
         </div>
       </header>
@@ -29,30 +29,30 @@
       <section class="card" aria-labelledby="exercise-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Create</p>
-            <h2 id="exercise-title">Add an exercise</h2>
+            <p class="eyebrow">新建</p>
+            <h2 id="exercise-title">添加练习</h2>
           </div>
         </div>
         <form id="exercise-form" class="stack">
-          <input id="exercise-name" type="text" placeholder="Exercise title" required />
-          <textarea id="exercise-guidance" placeholder="Brief guidance" rows="4" required></textarea>
-          <button type="submit">Add exercise</button>
+          <input id="exercise-name" type="text" placeholder="练习标题" required />
+          <textarea id="exercise-guidance" placeholder="练习说明" rows="4" required></textarea>
+          <button type="submit">添加练习</button>
         </form>
       </section>
 
       <section class="card" aria-labelledby="import-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Import</p>
-            <h2 id="import-title">Bulk upload</h2>
+            <p class="eyebrow">导入</p>
+            <h2 id="import-title">批量上传</h2>
           </div>
         </div>
         <div class="import-box stack">
           <label for="exercise-file">
-            Upload `.docx`, `.txt`, or `.md`. Each title line should start with `練習：`, and the guidance continues until the next empty line.
+            上传 `.docx`、`.txt` 或 `.md` 文件。每个标题行需以 `練習：` 开头，说明内容持续到下一个空行为止。
           </label>
           <input id="exercise-file" type="file" accept=".docx,.txt,.md,.text" />
-          <button id="import-exercises" type="button">Import exercises</button>
+          <button id="import-exercises" type="button">导入练习</button>
           <p id="import-status" class="status"></p>
         </div>
       </section>
@@ -60,8 +60,8 @@
       <section class="card" aria-labelledby="library-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Library</p>
-            <h2 id="library-title">Current exercise pool</h2>
+            <p class="eyebrow">资料库</p>
+            <h2 id="library-title">当前练习集</h2>
           </div>
           <p id="exercise-count" class="muted"></p>
         </div>

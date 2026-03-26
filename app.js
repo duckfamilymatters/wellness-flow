@@ -134,17 +134,17 @@ function addExercise(event) {
 async function importExercisesFromFile() {
   const file = els.exerciseFile?.files?.[0];
   if (!file) {
-    setImportStatus("Choose a file first.");
+    setImportStatus("请先选择文件。");
     return;
   }
 
-  setImportStatus(`Reading ${file.name}...`);
+  setImportStatus(`正在读取 ${file.name}...`);
 
   try {
     const text = await extractTextFromUpload(file);
     const parsed = parseExercisesFromText(text);
     if (!parsed.length) {
-      setImportStatus("No exercises found. Use lines starting with 練習： and separate each block with an empty line.");
+      setImportStatus("没有识别到练习。请确认标题行以 練習： 开头，并用空行分隔每个练习。");
       return;
     }
 
@@ -174,9 +174,9 @@ async function importExercisesFromFile() {
     persistState();
     renderExercises();
     if (els.exerciseFile) els.exerciseFile.value = "";
-    setImportStatus(`Imported ${added} exercises. Skipped ${duplicates} duplicates.`);
+    setImportStatus(`已导入 ${added} 个练习，跳过 ${duplicates} 个重复项。`);
   } catch (error) {
-    setImportStatus(`Import failed: ${error.message}`);
+    setImportStatus(`导入失败：${error.message}`);
   }
 }
 
@@ -197,7 +197,7 @@ async function extractTextFromUpload(file) {
     return extractDocxPlainText(await file.arrayBuffer());
   }
 
-  throw new Error("Unsupported format. Please upload .docx, .txt, or .md.");
+  throw new Error("不支持的格式，请上传 .docx、.txt 或 .md 文件。");
 }
 
 function parseExercisesFromText(text) {
@@ -258,12 +258,12 @@ function renderExercises() {
 
   els.exerciseList.innerHTML = "";
   if (els.exerciseCount) {
-    els.exerciseCount.textContent = `${state.exercises.length} exercise${state.exercises.length === 1 ? "" : "s"}`;
+    els.exerciseCount.textContent = `共 ${state.exercises.length} 个练习`;
   }
 
   if (!state.exercises.length) {
     const li = document.createElement("li");
-    li.textContent = "No exercises yet. Add one manually or import your existing pool.";
+    li.textContent = "当前还没有练习。你可以手动添加，或导入现有练习集。";
     els.exerciseList.appendChild(li);
     return;
   }
@@ -279,7 +279,7 @@ function renderExercises() {
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "ghost";
-    removeBtn.textContent = "Delete";
+    removeBtn.textContent = "删除";
     removeBtn.addEventListener("click", () => removeExercise(exercise.id));
 
     const guidance = document.createElement("p");
@@ -294,7 +294,7 @@ function renderExercises() {
 function pickExerciseForToday() {
   if (!state.exercises.length) {
     if (els.selectedExercise) {
-      els.selectedExercise.textContent = "Add at least one exercise in Manage Exercises before picking today’s practice.";
+      els.selectedExercise.textContent = "请先到“编辑练习集”中添加至少一个练习，再抽取今日练习。";
     }
     return;
   }
@@ -315,8 +315,8 @@ function renderTodayPick() {
 
   if (!pick) {
     els.selectedExercise.innerHTML = `
-      <strong>No practice selected yet.</strong>
-      <p>Pick one exercise when you are ready. Your exercise pool is managed on the separate screen.</p>
+      <strong>今天还没有抽取练习。</strong>
+      <p>准备好了就抽取一个练习。练习集可以在单独页面中编辑。</p>
     `;
     els.logForm.classList.add("hidden");
     return;
@@ -350,7 +350,7 @@ function saveLog(status) {
   renderStats();
   renderCalendar();
   if (els.dayDetail) {
-    els.dayDetail.textContent = `Saved ${status} for ${today}.`;
+    els.dayDetail.textContent = `${today} 已保存为“${status === "complete" ? "已完成" : "未完成"}”。`;
   }
 }
 
@@ -366,9 +366,9 @@ function renderStats() {
   const streak = computeCompletionStreak(today);
 
   els.stats.innerHTML = `
-    <div class="item"><span class="value">${completedThisWeek}</span>Completed this week</div>
-    <div class="item"><span class="value">${attemptedThisWeek}</span>Days recorded this week</div>
-    <div class="item"><span class="value">${streak}</span>Current completion streak</div>
+    <div class="item"><span class="value">${completedThisWeek}</span>本周已完成</div>
+    <div class="item"><span class="value">${attemptedThisWeek}</span>本周已记录天数</div>
+    <div class="item"><span class="value">${streak}</span>当前连续完成天数</div>
   `;
 }
 
@@ -394,17 +394,17 @@ function renderCalendar() {
   const firstOfMonth = new Date(Date.UTC(year, month, 1));
   const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
 
-  els.monthLabel.textContent = firstOfMonth.toLocaleDateString("en-US", {
+  els.monthLabel.textContent = firstOfMonth.toLocaleDateString("zh-CN", {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
   });
 
   if (els.calendarLegend) {
-    els.calendarLegend.textContent = "Completed days use mood rating: 1 lightest green to 5 deepest green. Incomplete, missing, and future days stay neutral.";
+    els.calendarLegend.textContent = "已完成的日期按心情评分显示深浅不同的绿色：1 最浅，5 最深。未完成、缺失和未来日期保持中性。";
   }
 
-  const weekdayOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const weekdayOrder = ["日", "一", "二", "三", "四", "五", "六"];
   els.calendar.innerHTML = "";
 
   weekdayOrder.forEach((day) => {
@@ -453,13 +453,14 @@ function showDayDetail(dateKey) {
 
   const log = state.logs[dateKey];
   if (!log) {
-    els.dayDetail.textContent = `${dateKey}: no entry.`;
+    els.dayDetail.textContent = `${dateKey}：暂无记录。`;
     return;
   }
 
-  const mood = log.mood ? ` Mood: ${log.mood}.` : "";
-  const note = log.note ? ` Note: ${log.note}` : "";
-  els.dayDetail.textContent = `${dateKey}: ${log.status}. Exercise: ${log.exerciseTitle}.${mood}${note}`;
+  const statusText = log.status === "complete" ? "已完成" : "未完成";
+  const mood = log.mood ? ` 心情：${log.mood}。` : "";
+  const note = log.note ? ` 备注：${log.note}` : "";
+  els.dayDetail.textContent = `${dateKey}：${statusText}。练习：${log.exerciseTitle}。${mood}${note}`;
 }
 
 function shiftMonth(delta) {
@@ -518,7 +519,7 @@ async function readZipEntryText(buffer, entryPath) {
   const view = new DataView(buffer);
   const eocdOffset = findEndOfCentralDirectory(bytes);
   if (eocdOffset === -1) {
-    throw new Error("Cannot read .docx file (invalid ZIP structure).");
+    throw new Error("无法读取 .docx 文件（ZIP 结构无效）。");
   }
 
   const centralDirOffset = view.getUint32(eocdOffset + 16, true);
@@ -546,12 +547,12 @@ async function readZipEntryText(buffer, entryPath) {
     pointer += 46 + fileNameLength + extraLength + commentLength;
   }
 
-  throw new Error(`Entry not found in .docx: ${entryPath}`);
+  throw new Error(`在 .docx 文件中找不到条目：${entryPath}`);
 }
 
 async function extractLocalFileText(view, bytes, localHeaderOffset, compressedSize, compressionMethod) {
   if (view.getUint32(localHeaderOffset, true) !== 0x04034b50) {
-    throw new Error("Invalid local file header in .docx.");
+    throw new Error(".docx 文件的本地文件头无效。");
   }
 
   const localNameLength = view.getUint16(localHeaderOffset + 26, true);
@@ -565,7 +566,7 @@ async function extractLocalFileText(view, bytes, localHeaderOffset, compressedSi
 
   if (compressionMethod === 8) {
     if (typeof DecompressionStream === "undefined") {
-      throw new Error("This browser cannot unzip .docx files. Export from Google Doc as .txt instead.");
+      throw new Error("当前浏览器无法解压 .docx 文件。请先从 Google Docs 导出为 .txt。");
     }
 
     const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
@@ -573,7 +574,7 @@ async function extractLocalFileText(view, bytes, localHeaderOffset, compressedSi
     return new TextDecoder("utf-8").decode(inflated);
   }
 
-  throw new Error(`Unsupported .docx compression method: ${compressionMethod}`);
+  throw new Error(`不支持的 .docx 压缩方式：${compressionMethod}`);
 }
 
 function findEndOfCentralDirectory(bytes) {

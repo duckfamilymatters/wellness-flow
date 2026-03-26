@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,61 +10,61 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
-    <title>Wellness Flow</title>
+    <title>每日一练</title>
   </head>
   <body data-page="home">
     <main class="app-shell">
       <header class="hero-panel">
         <nav class="top-nav" aria-label="Primary">
-          <a class="brand" href="index.html">Wellness Flow</a>
-          <a class="nav-link" href="manage.html">Edit Exercises Collection</a>
+          <a class="brand" href="index.html">每日一练</a>
+          <a class="nav-link" href="manage.html">编辑练习集</a>
         </nav>
         <div class="hero-copy">
-          <p class="eyebrow">Daily practice space</p>
-          <h1>A calmer ritual, kept simple.</h1>
+          <p class="eyebrow">每日练习空间</p>
+          <h1>用更安静的方式，稳稳地练下去。</h1>
           <p class="hero-text">
-            Pick one practice, complete it in the physical world, and keep a clean record of how it went.
+            每天选一个练习，在现实生活中完成它，并留下简洁清晰的记录。
           </p>
         </div>
       </header>
 
       <section class="card practice-card" aria-labelledby="today-title">
         <div class="section-heading">
-          <h2 id="today-title">Today&apos;s Practice</h2>
-          <a class="text-link" href="manage.html">Edit Exercises Collection</a>
+          <h2 id="today-title">今日练习</h2>
+          <a class="text-link" href="manage.html">编辑练习集</a>
         </div>
-        <button id="pick-exercise" type="button">Pick today&apos;s exercise</button>
+        <button id="pick-exercise" type="button">抽取今天的练习</button>
         <div id="selected-exercise" class="selected"></div>
         <form id="log-form" class="stack hidden">
-          <label for="mood-rating">Mood rating (optional)</label>
+          <label for="mood-rating">心情评分（可选）</label>
           <select id="mood-rating">
-            <option value="">No rating</option>
-            <option value="1">1 - Very low</option>
-            <option value="2">2 - Low</option>
-            <option value="3">3 - Neutral</option>
-            <option value="4">4 - Good</option>
-            <option value="5">5 - Very good</option>
+            <option value="">不评分</option>
+            <option value="1">1 - 很低落</option>
+            <option value="2">2 - 偏低</option>
+            <option value="3">3 - 平稳</option>
+            <option value="4">4 - 不错</option>
+            <option value="5">5 - 很好</option>
           </select>
-          <textarea id="log-note" rows="3" placeholder="Write anything worth remembering."></textarea>
+          <textarea id="log-note" rows="3" placeholder="写下你想记录的感受或想法。"></textarea>
           <div class="row">
-            <button id="mark-complete" type="button">Completed</button>
-            <button id="mark-incomplete" type="button" class="ghost">Not completed</button>
+            <button id="mark-complete" type="button">已完成</button>
+            <button id="mark-incomplete" type="button" class="ghost">未完成</button>
           </div>
         </form>
       </section>
 
-      <section class="stats-grid" aria-label="Progress overview">
+      <section class="stats-grid" aria-label="进度概览">
         <div id="stats" class="stats"></div>
       </section>
 
       <section class="card" aria-labelledby="calendar-title">
         <div class="section-heading">
-          <h2 id="calendar-title">Practice History</h2>
+          <h2 id="calendar-title">练习记录</h2>
         </div>
         <div class="row between">
-          <button id="prev-month" type="button" class="ghost">Previous</button>
+          <button id="prev-month" type="button" class="ghost">上个月</button>
           <strong id="month-label"></strong>
-          <button id="next-month" type="button" class="ghost">Next</button>
+          <button id="next-month" type="button" class="ghost">下个月</button>
         </div>
         <div id="calendar-legend" class="legend muted"></div>
         <div id="calendar" class="calendar"></div>

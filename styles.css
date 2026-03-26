@@ -140,7 +140,7 @@ h2 {
 
 .hero-text {
   margin: 12px 0 0;
-  max-width: 56ch;
+  max-width: 100%;
   font-size: 1rem;
   line-height: 1.6;
 }

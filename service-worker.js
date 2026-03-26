@@ -1,4 +1,4 @@
-const CACHE_NAME = "wellness-flow-cache-v7";
+const CACHE_NAME = "wellness-flow-cache-v8";
 const ASSETS = [
   "./",
   "./index.html",
